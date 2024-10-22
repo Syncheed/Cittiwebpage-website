@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="styles/style.css"/>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citti Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"> <!-- Using Montserrat -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif; /* Changed to Montserrat */
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Set background to black */
+            color: white; /* Default text color to white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: auto; 
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for cards */
+            padding: 30px; /* Reduced padding */
+            border-radius: 12px; /* Slightly smaller radius */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Shadow with reduced opacity */
+            max-width: 400px; /* Set a max width for the login form */
+            width: 90%; /* Responsive width */
+            margin-bottom: 20px; /* Space between containers */
+            position: relative; /* Added relative positioning for absolute children */
+            animation: fadeIn 1s ease-in-out; /* Animation for container */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1, h2 {
+            color: gold; /* Gold for headings */
+        }
+        p {
+            font-size: 14px; /* Reduced font size */
+            line-height: 1.4; /* Adjusted line height */
+        }
+        input[type=text], input[type=password] {
+             width :100%;
+             padding :12px ; 
+             margin-bottom :10px ; /* Reduced space between fields */
+             border-radius :5px ; 
+             border :1px solid #ccc ;
+             box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); 
+         } 
+         button {
+             background-color: blue; /* Blue for buttons */
+             color:white ; 
+             padding :12px; 
+             border:none ; 
+             border-radius :20px; 
+             font-size :14px ; 
+             cursor:pointer ; 
+             transition :background-color .3s ease ,transform .3s ease;
+             margin-top :10px; /* Space above buttons */
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow with reduced opacity for buttons */
+         } 
+         button:hover {
+             background-color: green; /* Green on hover */
+             transform :scale(1.05); /* Slightly increased scale on hover */
+         } 
+         footer {
+             margin-top :15px; 
+             font-size :16px; /* Increased font size for footer message */
+             position: relative;
+             overflow: hidden;
+             box-shadow: 0 2.5px 6.4px rgba(0, 0, 0, 0.56); /* Shadow with reduced opacity for footer message (20% reduction) */
+             text-transform: uppercase; /* Make text uppercase */
+         }
+
+         .profile-card {
+           background-color: rgba(255, 255, 255, 0.2);
+           padding: 15px;
+           border-radius: 10px;
+           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+           margin-bottom: 20px; /* Space between profile card and other elements */
+           text-align: left; /* Align text to the left */
+           animation: slideInUp .5s ease-in-out; /* Animation for profile card */
+         }
+
+         @keyframes slideInUp {
+           from {
+               transform: translateY(20%);
+               opacity: 0;
+           }
+           to {
+               transform: translateY(0);
+               opacity: 1;
+           }
+         }
+
+         .balance {
+           font-size: calc(36px * 0.9); /* Reduced balance font size by about 10% */
+           font-weight: bold; /* Bold text */
+           color: yellow; /* Yellow color for balance */
+         }
+
+         .transaction-card {
+            background-color: rgba(255, 255, 255, 0.2); /* Light background for transaction card */
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px; /* Space between transaction cards */
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between elements */
+            align-items: center; /* Center items vertically */
+            animation: fadeIn .5s ease-in-out; /* Animation for transaction cards on display */
+        }
+
+        .transaction-card:hover {
+            background-color: rgba(255,255,255,0.3); /* Slightly darker on hover */
+        }
+
+        canvas {
+          max-width: calc(100% - 40px);
+          height: auto;
+          margin-top: 20px;
+          border-radius:10px; /* Rounded corners for the chart */
+          box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Shadow for a lifted effect on the chart */
+          display:block;
+          margin-left:auto;
+          margin-right:auto;
+        }
+
+        .error-message {
+          color:red;
+          font-size:12px;
+          margin-top:-10px;
+          margin-bottom:-10px;
+        }
+
+        .terms-conditions {
+          text-align:left;
+          margin-top:20px;
+          padding-left:20px;
+          padding-right:20px;
+          padding-top:10px;
+          padding-bottom:10px;
+        }
+
+        @media (max-width:768px) {
+          .container {
+              width:auto; // Adjust width for smaller screens
+              padding-left :15px ;
+              padding-right :15px ;
+          }
+          
+          h1 {font-size :24px;} // Adjust heading size
+          
+          h2 {font-size :20px;} // Adjust subheading size
+          
+          button {font-size :12px;} // Adjust button size
+          
+          footer {font-size :14px;} // Adjust footer size
+      }
+
+    </style>
+</head>
+<body>
+
+<!-- Landing Page -->
+<div class="container" id="landing">
+    <h1>Welcome to Citti Bank</h1>
+    <p>Empowering your financial journey with tailored solutions.</p>
+    
+    <p>Join us today and discover how our innovative services can make a difference in your financial success!</p>
+
+    <!-- Sign In Button -->
+    <button onclick="showLogin()">Sign In</button>
+
+    <!-- Footer message only on landing page -->
+    <footer class="footer-message">Thanks for banking here at Citti Bank!</footer>
+</div>
+
+<!-- Login Form -->
+<div class="container" id="login" style="display:none;">
+    <h1>Sign In</h1>
+    
+    <form id="loginForm"> <!-- Placeholder action --> 
+        <label for="username"><b>Email or Username</b></label> 
+        <input type="text" id="username" name="username" placeholder="Enter Email or Username" required>
+
+        <label for="password"><b>Password</b></label> 
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+       <!-- Error Message -->
+       <div class="error-message" id="error-message"></div>
+
+       <!-- Redirect to Dashboard on Login -->
+       <button type="button" onclick="validateLogin()">Login</button> 
+
+       <!-- Footer message only on login page -->
+       <footer class="footer-message">Thanks for banking here at Citti Bank!</footer>
+    </form>
+</div>
+
+<!-- Dashboard Page -->
+<div class="container dashboard" id="dashboard" style="display:none;">
+    <!-- Log Out Button -->
+    <button class="logout-button" onclick="showLandingPage()" style="position:absolute; top:10px; right:10px; background-color:#A50034;color:white;border-radius:20px;padding:10px;">Log Out</button>
+    
+    <h2 style="text-align:left;">Welcome back Tiner</h2> <!-- Updated greeting -->
+    
+    <div class="profile-card">
+       <div class="account-header"><strong>AA3 SAVINGS ACCOUNT</strong></div> <!-- Updated account header -->
+       <p>Name:<span>        Ike Tiner</span></p>
+       <p>Account Number:<span>             6524801755</span></p>
+       <p>Account Status:<span>             Active</span></p>
+       <p class="balance">Balance:$3,008,950.00</p> <!-- Updated balance -->
+   </div>
+
+   <h2>Actions</h2>
+   <div class="button-container">
+       <button onclick="alert('Withdraw Clicked')">Withdraw</button>
+       <button onclick="alert('Deposit Clicked')">Deposit</button>
+       <button onclick="alert('Loans Clicked')">Loans</button>
+       <button onclick="alert('Bills Clicked')">Bills</button>
+       <button onclick="alert('Dispute Clicked')">Dispute</button>
+   </div>
+
+   <!-- Recent Transactions Button -->
+   <button class="recent-transactions" onclick="showTransactions()">Recent Transactions</button>
+
+   <!-- Terms and Conditions Section -->
+   <div class="terms-conditions">
+      <h3>Terms and Conditions</h3>
+      <p>Please read our terms and conditions carefully before using our services.</p>
+      <!-- Add more terms as needed -->
+      <!-- Customer Care Button centered -->
+      <div style="text-align:center;">
+         <button onclick="callCustomerCare()" style="margin-top:20px;background-color:#A50034;color:white;border-radius:5px;padding:10px;">Call Customer Care (0987654321)</button>
+      </div>
+   </div>
+
+   <!-- Bar Chart Section -->
+   <canvas id="moneyChart"></canvas>
+
+   <!-- Line Chart Section -->
+   <canvas id="lineChart"></canvas>
+
+   <!-- Chart.js Script -->
+   <!-- (Your existing script here) -->
+
+   <!-- Footer message only on dashboard page -->
+   <footer class="footer-message">Thanks for banking here at Citti Bank!</footer> 
+</div>
+
+<!-- Transactions Page -->
+<div class="container" id="transactions" style="display:none;">
+    <h1>Recent Transactions</h1>
+
+    <div id='transactionList'></div><!-- Container for transactions -->
+
+    <!-- Back Button at the bottom -->
+    <button onclick="goToDashboard()" style="margin-top:20px;background-color:#A50034;color:white;border-radius:5px;padding:10px;">Back to Dashboard</button>
+</div>
+
+<script>
+// Function to show the login page
+function showLogin() {
+    document.getElementById("landing").style.display = "none"; // Hide landing
+    document.getElementById("login").style.display = "block"; // Show login
+}
+
+// Function to show landing page from dashboard (Log Out)
+function showLandingPage() {
+    document.getElementById("dashboard").style.display = "none"; // Hide dashboard
+    document.getElementById("landing").style.display = "block"; // Show landing page
+}
+
+// Function to validate login credentials
+function validateLogin() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    // Validate email format and password correctness
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(username)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Updated credentials
+    if (username !== "evatiner34@gmail.com" || password !== "Tiner34") {
+        alert("Incorrect email or password.");
+        return;
+    }
+
+    showDashboard(); // If validation passes, show dashboard
+}
+
+// Function to show the dashboard page
+function showDashboard() {
+    document.getElementById("login").style.display = "none"; // Hide login
+    document.getElementById("dashboard").style.display = "block"; // Show dashboard
+}
+
+// Function to show the transactions page
+function showTransactions() {
+    document.getElementById("dashboard").style.display = "none"; // Hide dashboard
+    document.getElementById("transactions").style.display = "block"; // Show transactions
+    const recentTransactions = generateRandomTransactions(); // Generate transactions
+    displayTransactions(recentTransactions); // Display transactions
+}
+
+// Function to generate random transactions
+function generateRandomTransactions() {
+    const transactions = [];
+    const transactionTypes = ['Deposit', 'Withdraw', 'Payment', 'Transfer'];
+    const descriptions = [
+        'bitcoin purchase fee',
+        'bitcoin purchase fee',
+        'Grocery shopping',
+        'Online purchase',
+        'bitcoin purchase fee',
+        'Transfer to savings',
+        'Investment in stocks',
+        'bitcoin purchase fee',
+        'bitcoin purchase fee',
+        'Cash deposit',
+        'Credit card payment',
+        'Subscription fee',
+        'bitcoin purchase fee',
+        'Rent payment',
+        'Medical expenses',
+        'bitcoin purchase fee',
+        'bitcoin purchase fee',
+        'Car maintenance',
+        'bitcoin purchase fee',
+        'bitcoin donation',
+        'Miscellaneous expenses'
+    ];
+
+    for (let i = 0; i<40;i++) { // Generate up to **40** transactions
+         const amount = (Math.random() * (10000 -50) +50).toFixed(2); // Random amount between $50 and $10,000
+         const type = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+         const description = descriptions[Math.floor(Math.random() * descriptions.length)];
+         
+         // Generate random date and time
+         const date = new Date(Date.now() - Math.random() * (10000 *60 *60 *24 *30));
+         const formattedDate = date.toLocaleDateString();
+         const formattedTime = date.toLocaleTimeString([], { hour12:false });
+
+         transactions.push({
+             id:i +1,
+             type,
+             amount,
+             description,
+             formattedDate,
+             formattedTime,
+         });
+     }
+     return transactions;
+}
+
+// Function to display transactions
+function displayTransactions(transactions) {
+     const transactionList = document.getElementById('transactionList');
+     transactionList.innerHTML = ''; // Clear previous content
+
+     transactions.forEach(transaction => {
+         const card = document.createElement('div');
+         card.className = 'transaction-card';
+
+         card.innerHTML = `
+              ${transaction.type} | ${transaction.description} | Date:${transaction.formattedDate} ${transaction.formattedTime}
+              | Amount:$${transaction.amount}
+         `;
+         
+         transactionList.appendChild(card);
+     });
+}
+
+// Generate and display transactions on page load
+const recentTransactions = generateRandomTransactions();
+displayTransactions(recentTransactions);
+
+// Function to go back to the dashboard from the transactions page
+function goToDashboard() {
+    document.getElementById("transactions").style.display = "none"; // Hide transactions page
+    document.getElementById("dashboard").style.display = "block"; // Show dashboard page
+}
+
+// Function to call customer care (just an alert in this case)
+function callCustomerCare() {
+    alert("Calling Customer Care at (0987654321)");
+}
+
+</script>
+
+</body>  
+</html>
